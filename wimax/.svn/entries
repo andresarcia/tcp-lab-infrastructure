@@ -1,0 +1,73 @@
+8
+
+dir
+45
+svn+ssh://aarcia@ipv6.enstb.fr/home/svn/tcp-lab/trunk/templates/infrastructure/wimax
+svn+ssh://aarcia@ipv6.enstb.fr/home/svn/tcp-lab
+
+
+
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+737cd77d-3d5a-0410-bc6b-dd15427f7ad0
+
+infrast-802-16.tcl
+file
+
+
+
+
+2008-10-27T16:46:10.000000Z
+b956e6dc9a5fa381f65ed89481e74f7f
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+
+wimax-settings.tcl
+file
+
+
+
+
+2008-10-27T16:46:10.000000Z
+9b33c2de3d40d90326a05e6ff8ee6fd9
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+
+brgm
+dir
+
+readme.txt
+file
+
+
+
+
+2008-10-27T16:46:10.000000Z
+28f66ef0c29dd1dd39a674a3a17ba841
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+
+ns-2-model
+dir
+
+wimax-brgm-module
+dir
+

@@ -1,0 +1,9 @@
+notes on the experimentation:
+
+The following notes corresponds to the infras-802-11.tcl. Using a single TCP source and sink, source is located at the wired node and sink at the wireless node. The TCP connection performs a download TCP transfer. 
+
+* If maxburst_ is not modified (i.e., equals zero) there are a losses that occurs in bursts. Even when the bottleneck is located at the wireless part, the capacity of sending large burst induce losses in the wired part. Setting the maxburst_ to 3 moves all the losses to the Access Point (AP). 
+
+* After a burst of losses at the AP, the cwnd reaches a very high value in fast recovery. This value exceeds many times the maximum attained value of the cwnd_. This is due to the extra_ack method that blindly increases the cwnd after the reception of many dupacks. Each of the received dupacks increases by 1 the cwnd. As there where many losses, the recovery phase is larger. Remember we're using NewReno, and therefore partial acks make the cwnd advance aggressively and continue to grow for the whole large recovery process. 
+
+* See the tcp-newreno (simple TCP) implementation, and explore how this version deals with multiple losses. 

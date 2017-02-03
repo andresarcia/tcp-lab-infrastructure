@@ -1,0 +1,79 @@
+8
+
+dir
+45
+svn+ssh://aarcia@ipv6.enstb.fr/home/svn/tcp-lab/trunk/templates/infrastructure/wifi
+svn+ssh://aarcia@ipv6.enstb.fr/home/svn/tcp-lab
+
+
+
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+737cd77d-3d5a-0410-bc6b-dd15427f7ad0
+
+output
+dir
+
+wifi-explained.txt
+file
+
+
+
+
+2008-10-27T16:46:10.000000Z
+f7b6e8d80723bd46f19d86e105aa1547
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+
+infras-802-11.tcl
+file
+
+
+
+
+2008-10-27T16:46:10.000000Z
+0854fba3ff381581ab46556484643ce4
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+
+notes-on-experimentation.txt
+file
+
+
+
+
+2008-10-27T16:46:10.000000Z
+a6034b2bc991bbedd77b5f2c6170894a
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+
+wifi-settings.tcl
+file
+
+
+
+
+2008-10-27T16:46:10.000000Z
+819f3f98a6911d681671f68cae8ff6f2
+2008-10-27T16:54:07.683159Z
+43
+aarcia
+

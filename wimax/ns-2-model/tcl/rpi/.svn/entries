@@ -1,0 +1,40 @@
+8
+
+dir
+57
+svn+ssh://aarcia@ipv6.enstb.fr/home/svn/tcp-lab/trunk/templates/infrastructure/wimax/ns-2-model/tcl/rpi
+svn+ssh://aarcia@ipv6.enstb.fr/home/svn/tcp-lab
+
+
+
+2009-05-12T15:26:18.813090Z
+57
+aarcia
+
+
+svn:special svn:externals svn:needs-lock
+
+tcp-stats.tcl.old
+file
+
+
+
+
+2009-05-12T15:03:18.000000Z
+064d21e87a911ecd7d31e278f24b8a33
+2009-05-12T15:26:18.813090Z
+57
+aarcia
+
+tcp-stats.tcl
+file
+
+
+
+
+2009-05-12T15:03:18.000000Z
+064d21e87a911ecd7d31e278f24b8a33
+2009-05-12T15:26:18.813090Z
+57
+aarcia
+

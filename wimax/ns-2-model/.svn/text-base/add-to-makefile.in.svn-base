@@ -1,0 +1,16 @@
+MODIFY IN
+OBJ_CC = \
+...
+tcp/tcp-vegas.o tcp/tcp-rbp.o tcp/tcp-full.o tcp/tcp-full-newreno.o tcp/rq.o \
+WITH
+tcp/tcp-vegas.o tcp/tcp-rbp.o tcp/tcp-full.o tcp/rq.o \
+
+TO ADD TO 
+OBJ_CC = \
+...
+       	wimax/Log/logger.o  \
+	wimax/BWPerceptionManagementPolicy.o \
+	wimax/dDDAPolicy.o \
+	wimax/iDDAPolicy.o \
+	wimax/RPGPolicy.o \
+	wimax/DPGPolicy.o \

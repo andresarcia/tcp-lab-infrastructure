@@ -1,0 +1,75 @@
+This is a short explanation for the wifi trace:
+
+What's the MAC/PHY configuration for this trace?
+Identify all the packets.
+
+STA registration. Occurs during the first seconds of the simulation. The
+whole process take longer if the number of wireless stations increases.
+
+s -t 0.634523304 -Hs 2 -Hd -1 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 0 -Md ffffffff -Ms 1 -Mt 800 -Is 4196352.255 -Id -1.255 -It message -Il 90 -If 0 -Ii 0 -Iv 32
+r -t 1.607746557 -Hs 2 -Hd -1 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 0 -Md ffffffff -Ms 0 -Mt 800 -Is 4194304.255 -Id -1.255 -It message -Il 32 -If 0 -Ii 1 -Iv 32
+
+At t=10sec the SYN packet to initiate the three-way handshake is sent by 
+the wired node. 
+
++ 10 0 1 tcp 40 C--A--- 1 0.0.0.0 1.1.0.0 0 2 -1 0xca 40 0
+- 10 0 1 tcp 40 C--A--- 1 0.0.0.0 1.1.0.0 0 2 -1 0xca 40 0
+r 10.050032 0 1 tcp 40 C--A--- 1 0.0.0.0 1.1.0.0 0 2 -1 0xca 40 0
+
+Once it arrives correctly at the Base Station, SYN packet has to be forwarded.
+But, first a ARQ request/reply takes place so as to find the route from the
+STA to the BS.
+
+r -t 10.050768414 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 0 -Md ffffffff -Ms 0 -Mt 806 -P arp -Po REQUEST -Pms 0 -Ps 4194304 -Pmd 0 -Pd 4196352
+s -t 10.051303414 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 2fb -Md 0 -Ms 1 -Mt 0
+r -t 10.051836243 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 1f9 -Md 1 -Ms 0 -Mt 0
+s -t 10.051846243 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 102 -Md 0 -Ms 1 -Mt 806 -P arp -Po REPLY -Pms 1 -Ps 4196352 -Pmd 0 -Pd 4194304
+r -t 10.052344162 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 0 -Md 1 -Ms 0 -Mt 0
+r -t 10.053006162 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 304 -Md 1 -Ms 0 -Mt 0
+s -t 10.053016162 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 202 -Md 0 -Ms 0 -Mt 0
+
+SYN is received by the STA.
+
+r -t 10.053522809 -Hs 2 -Hd 4196352 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 102 -Md 1 -Ms 0 -Mt 800 -Is 0.0 -Id 4196352.0 -It tcp -Il 40 -If 1 -Ii 2 -Iv 30 -Pn tcp -Ps 0 -Pa -1 -Pf 1 -Po 0
+
+My gues is that the following is an MAC-ACK packet (see -Ma 0 -Md 0 -Ms 0 -Mt 0). This 
+packet returns to the BS after receiving the TCP-ACK.
+
+s -t 10.053532809 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 0 -Md 0 -Ms 0 -Mt 0
+
+Reception of the packet by the TCP Agent.
+
+r -t 10.053547809 -Hs 2 -Hd 4196352 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl AGT -Nw --- -Ma 102 -Md 1 -Ms 0 -Mt 800 -Is 0.0 -Id 4196352.0 -It tcp -Il 40 -If 1 -Ii 2 -Iv 30 -Pn tcp -Ps 0 -Pa -1 -Pf 1 -Po 0
+
+Responding SYN+ACK from the TCP Agent.
+
+s -t 10.053547809 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl AGT -Nw --- -Ma 0 -Md 0 -Ms 0 -Mt 0 -Is 4196352.0 -Id 0.0 -It ack -Il 40 -If 1 -Ii 3 -Iv 32 -Pn tcp -Ps 0 -Pa 1 -Pf 0 -Po 0
+
+See this two MAC packets that are always toghether (-Ma 304 and -Ma 202)
+
+s -t 10.054030809 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 304 -Md 0 -Ms 1 -Mt 0
+r -t 10.054563637 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 202 -Md 1 -Ms 0 -Mt 0
+
+Send the SYN+ACK from the STA to the BS at the MAC layer.
+
+s -t 10.054573637 -Hs 2 -Hd 4194304 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 102 -Md 0 -Ms 1 -Mt 800 -Is 4196352.0 -Id 0.0 -It ack -Il 98 -If 1 -Ii 3 -Iv 32 -Pn tcp -Ps 0 -Pa 1 -Pf 0 -Po 0
+
+
+
++ 10.054846 1 0 ack 40 C------ 1 1.1.0.0 0.0.0.0 0 3 1 0x5a 40 0
+- 10.054846 1 0 ack 40 C------ 1 1.1.0.0 0.0.0.0 0 3 1 0x5a 40 0
+r -t 10.055080284 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 0 -Md 1 -Ms 0 -Mt 0
+r 10.104878 1 0 ack 40 C------ 1 1.1.0.0 0.0.0.0 0 3 1 0x5a 40 0
++ 10.104878 0 1 tcp 40 ------- 1 0.0.0.0 1.1.0.0 1 4 1 0x10 40 0
+- 10.104878 0 1 tcp 40 ------- 1 0.0.0.0 1.1.0.0 1 4 1 0x10 40 0
++ 10.104878 0 1 tcp 1000 ------N 1 0.0.0.0 1.1.0.0 1 5 1 0x10 40 0
++ 10.104878 0 1 tcp 1000 ------N 1 0.0.0.0 1.1.0.0 961 6 1 0x10 40 0
+- 10.10491 0 1 tcp 1000 ------N 1 0.0.0.0 1.1.0.0 1 5 1 0x10 40 0
+- 10.10571 0 1 tcp 1000 ------N 1 0.0.0.0 1.1.0.0 961 6 1 0x10 40 0
+r 10.15491 0 1 tcp 40 ------- 1 0.0.0.0 1.1.0.0 1 4 1 0x10 40 0
+r -t 10.155498284 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 304 -Md 1 -Ms 0 -Mt 0
+s -t 10.155508284 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 202 -Md 0 -Ms 0 -Mt 0
+r 10.15571 0 1 tcp 1000 ------N 1 0.0.0.0 1.1.0.0 1 5 1 0x10 40 0
+r -t 10.156014930 -Hs 2 -Hd 4196352 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 102 -Md 1 -Ms 0 -Mt 800 -Is 0.0 -Id 4196352.0 -It tcp -Il 40 -If 1 -Ii 4 -Iv 30 -Pn tcp -Ps 1 -Pa 1 -Pf 1 -Po 0
+s -t 10.156024930 -Hs 2 -Hd -2 -Ni 2 -Nx 500.00 -Ny 500.00 -Nz 0.00 -Ne -1.000000 -Nl MAC -Nw --- -Ma 0 -Md 0 -Ms 0 -Mt 0
+

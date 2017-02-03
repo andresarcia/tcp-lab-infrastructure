@@ -1,0 +1,137 @@
+{\rtf1\ansi\ansicpg1252\cocoartf949\cocoasubrtf430
+{\fonttbl\f0\fnil\fcharset0 Monaco;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\ql\qnatural
+
+\f0\fs24 \cf0 Contact: Andr\'e9s Arcia. andres@arcia.net.ve\
+Last update: 22/5/09.\
+\
+This is the upgraded version of the NIST's WiMAX module worked for Alejandro's Master Thesis and before starting the Post-doc of Yubo Yang. \
+\
+To install the module into ns-2.33 follow this instructions: \
+\
+1) untar the \'91modified\'92 wimax module: wimax-telbret.tar.gz\
+2) untar the \'91extras\'92: wimax-telbret-extras.tar.gz\
+3) manually add the following lines to the Makefile.in. These lines go at the end of the OBJ_CC, that is, before @V_STLOBJ@\
+\
+-- starts here ---\
+\'a0 \'a0 \'a0 \'a0 wimax/ofdmphy.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/mac802_16pkt.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/serviceflowqos.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/serviceflow.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/serviceflowhandler.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/connection.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/connectionmanager.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/peernode.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/mac802_16.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/mac802_16SS.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/mac802_16BS.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/sduclassifier.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/destclassifier.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/mac802_16timer.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/wimaxneighborentry.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/neighbordb.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/wimaxscheduler.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/bsscheduler.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/ssscheduler.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/ulsubframetimer.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/dlsubframetimer.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/burst.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/contentionslot.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/contentionrequest.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/contentiontimer.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/dlburst.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/ulburst.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/framemap.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/phypdu.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/profile.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/subframe.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/scanningstation.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/scheduling/wimaxctrlagent.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/Log/logger.o\'a0 \\\
+\'a0 \'a0 \'a0 \'a0 wimax/BWPerceptionManagementPolicy.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/dDDAPolicy.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/iDDAPolicy.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/RPGPolicy.o \\\
+\'a0 \'a0 \'a0 \'a0 wimax/DPGPolicy.o \\\
+--- ends here ---\
+\
+3.1) adding also in Makefile.in, the ns-wimax.tcl to the automatic tcl-library compiling at the end of the NS_TCL_LIB and just before @V_NS_TCL_LIB_STL@\
+\
+--- starts here ---\
+\'a0\'a0 \'a0 \'a0 tcl/lib/ns-wimax.tcl \\\
+--- ends here ---\
+\
+3.2) adding also in Makefile.in, the wimax directory in INCLUDES (no matter the position):\
+\
+--- starts here ---\
+-I./wimax\\\
+--- ends here ---\
+\
+4) Fixing the AODV and DSDV protocols to not adding the IP header length to the current frame in ::recv method transporting TCP packets (data or ACKs):\
+\
+Look into dsdv/dsdv.cc (DSDV_Agent::recv), just add the condition for the packet size in the common header as follows:\
+\
+if (cmh->ptype() != PT_TCP && cmh->ptype() != PT_ACK)\
+\'a0 \'a0 cmh->size() += IP_HDR_LEN;\
+\
+\
+5) Add the call for the source file in tcl/lib/ns-lib.tcl near the end of all sources call for include:\
+\
+--- starts here ---\
+#WiMAX\
+source ns-wimax.tcl\
+--- ends here ---\
+\
+6) copy the ns-wimax.tcl (the version for the bandwidth request-grant mechanism) inside the directory tcl/lib. Remember we\'92ve just make the include of this file within ns-lib.tcl.\
+\
+7) inside ns-packet.tcl register the packet type 802_16 inside the list to register specific protocol packet-ids :\
+\
+foreach prot \{\
+# all other packet types\
+...\
+# near the end simply add the following element:\
+802_16\'a0\
+\} \{\
+add-packet-header $prot\
+\}\
+\
+8) Inside the commons/packet.h file add the following packet identifier for the WiMAX control packets:\
+\
+--- starts here ---\
+// Wimax BS control\
+static const packet_t PT_WIMAXBS = 61;\
+--- ends here ---\
+\
+8.1) remember to change the last packet number to *62*, like this\
+\
+static packet_t \'a0 \'a0 \'a0 PT_NTYPE = 62; // This MUST be the LAST one\
+\
+\
+8.2) and add the packet name:\
+\
+--- starts here ---\
+//\'a0 Wimax BS Control\
+name_[PT_WIMAXBS]="wimaxCtrl";\
+--- ends here ---\
+\
+9) copy mac-stats.h inside ns-2.33/mac\
+\
+10) ./configure; make clean; make\
+\
+11) set the correspondent values of NS and TCPLAB environment variables\
+\
+12) run the script throughput.tcl inside the test directory like this:\
+\
+ns throughput.tcl -nbss 2 -fn \'93/dev/null\'94\
+\
+you should get approximately the following values:\
+\
+\pard\pardeftab720\ql\qnatural
+
+\f1 \cf0 SS=2 aggr-throughput=9.956296\
+\
+SS=2 bw-req-coll-prob=0.0037376017228169713 \'a0\
+}

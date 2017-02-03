@@ -1,0 +1,99 @@
+Scenario 01:  
+	Aggregate Throughput
+
+Description:
+	Appends to the file "aThroughput $ratio" the numbers of subscriptors and aggregated Throughput archived in $silTime s. Where $ratio is the dlratio and silTime is the simulation duration. Both assignated via parameters to the script.The first 400 s are chosen as a warm-up time and therefore purged.
+
+Parameters:
+	-fn 	Filename of the tracefile
+	-nbss  	Numbers of subscriptors
+        -stime	Simulation time	
+	-dlr  	dlratio
+	-dtlim 	Maximum allowed number of TCP packets per SS per frame. (0 - no constrain, infinite)		
+
+Script:
+	sc01-AggregateThroughputGraph.tcl
+
+Example:
+	ns AggregateThroughputGraph.tcl -fn "SS2R.5Trace" -nbss 2 -stime 1000 -dlr 0.5
+
+--------------------------------------------------------------------------------------------
+Scenario 02:
+	RTT Graph
+
+Description:
+	Generates files (MeanRTT$ratioL$dlim.DAT) with the trace of the rtt_ variable for each TCP connection. There is one connection per Subscriber station. 
+
+Parameters:
+	-fn 	Filename of the tracefile
+	-nbss  	Numbers of subscriptors
+        -stime 	Simulation time	
+	-dlr  	dlratio	
+	-dtlim 	Maximum allowed number of TCP packets per SS per frame. (0 - no constrain, infinite)		
+
+Script:
+   sc02-RTTGraph.tcl	
+
+Example:
+   sc02-RTTGraph.tcl -fn "SS2R.5Trace" -nbss 2 -stime 1000 -dlr 0.5 -dtlim 0
+--------------------------------------------------------------------------------------------
+Scenario 03: 
+	CBR Throughput
+Description:
+	Generate a simulation with a BS and a given number of SSs. CBR connections are established between the BS and the SSs. 
+Parameters:
+	-fn 	Filename of the tracefile
+	-nbss  	Numbers of subscriptors
+        -stime 	Simulation time	(s)
+	-dlr  	dlratio	
+	-ult	Direction of the CBR flow. (0: Downlink flow, 1: Uplink Flow)
+	-cbrBw	Bandwidth of the CBR traffic (Mb)
+	-trs	Start time of CBR traffic (s)
+ 
+Script:
+	CBRThroughput.tcl	
+
+Example:
+	CBRThroughput.tcl  -fn "SS1R.5Trace" -nbss 1 -stime 1000 -dlr 0.5 -ult 0 -cbrbw 100 -trs 3
+
+--------------------------------------------------------------------------------------------
+Scenario 04:
+	Fairness Graph
+Description:
+	Generate the file "$filename FairnessGraph" with the graph of the Fairness over the time using Jain's Fairness Index.
+
+Parameters:
+	-fn 	Filename of the tracefile
+	-nbss  	Numbers of subscriptors
+        -stime 	Simulation time	
+	-dlr  	dlratio	
+	-dtlim 	Maximum allowed number of TCP packets per SS per frame. (0 - no constrain, infinite)		
+
+Script:
+	sc04-FairnessGraph.tcl
+Example:
+	sc04-FairnessGraph.tcl -fn "SS2R.5Trace" -nbss 2 -stime 1000 -dlr 0.5 -dtlim 0 
+	
+	
+--------------------------------------------------------------------------------------------
+Scenario 05:
+	
+	
+Description:
+	Generate the file "$filename FairnessGraph" with the graph of the Fairness over the time using Jain's Fairness Index.
+
+Parameters:
+	-fn 	Filename of the tracefile
+	-nbss  	Numbers of subscriptors
+    -stime 	Simulation time	
+	-dlr  	dlratio	
+	-dtlim 	Maximum allowed number of TCP packets per SS per frame. (0 - no constrain, infinite)		
+	-Athr
+	-
+	-
+	
+Script:
+	sc05-ThroughputCwndFairness.tcl
+Example:
+	sc05-ThroughputCwndFairnessh.tcl -fn "SS2R.5Trace" -nbss 2 -stime 1000 -dlr 0.5 -dtlim 0 
+
